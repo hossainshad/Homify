@@ -26,13 +26,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(session({
-    secret: "secret-key",
+    secret: process.env.SESSION_SECRET || "secret-key",
     resave: false,
-    saveUninitialized:false,
+    saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost:27017/homify', 
+        mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/homify',
         ttl: 24 * 60 * 60 // 1 day
-    })
+    }),
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    }
 }));
 
 // Setting EJS as the view engine
@@ -75,4 +79,8 @@ app.use(paymentRoutes);
 app.use(maintenanceRoutes);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+}
+
+export default app;

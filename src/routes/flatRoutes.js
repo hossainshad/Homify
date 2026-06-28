@@ -81,7 +81,7 @@ const submitRentRequest = async (req, res) => {
     }
 };
 
-router.get('/:id', requireAuth, viewFlatDetails);
+router.get('/:id', viewFlatDetails);
 router.post('/:id/request', requireAuth, submitRentRequest);
 
 export default router;

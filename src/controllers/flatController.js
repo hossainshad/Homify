@@ -2,8 +2,8 @@ import { FlatModel } from '../models/Flats.js';
 
 export const addFlat = async (req, res) => {
     try {
-        // Get image paths from uploaded files
-        const imagePaths = req.files.map(file => `/uploads/flats/${file.filename}`);
+        // Cloudinary returns the hosted URL in file.path
+        const imagePaths = req.files.map(file => file.path);
         
         // Create flat with images
         const flatData = {

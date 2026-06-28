@@ -52,6 +52,43 @@
         </div>
     </div>
 
+    <!-- Available Listings -->
+    <div id="listings" class="bg-[#F8FAFC] py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-[#1E293B] mb-2">Available Listings</h2>
+                    <p class="text-[#64748B]">Browse vacant flats currently on Homify</p>
+                </div>
+                <a href="/register" class="text-[#3B82F6] hover:text-[#2563EB] font-medium">Sign up to rent →</a>
+            </div>
+
+            <% if (typeof flats !== 'undefined' && flats && flats.length > 0) { %>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <% flats.forEach(function(flat) { %>
+                        <a href="/flats/<%= flat._id %>" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden block">
+                            <div class="h-48 bg-gray-200 bg-center bg-cover" style="background-image: url('<%= (flat.images && flat.images[0]) ? flat.images[0] : '/images/main.jpg' %>')"></div>
+                            <div class="p-5">
+                                <h3 class="text-lg font-semibold text-[#1E293B] mb-1"><%= flat.property_name %></h3>
+                                <p class="text-[#3B82F6] font-bold text-xl mb-2">৳<%= flat.rent.toLocaleString() %>/month</p>
+                                <p class="text-[#64748B] text-sm mb-3"><%= flat.address %>, <%= flat.location_area %></p>
+                                <div class="flex gap-4 text-sm text-[#64748B]">
+                                    <span><%= flat.bedrooms %> Beds</span>
+                                    <span><%= flat.bathrooms %> Baths</span>
+                                    <span><%= flat.size %> sqft</span>
+                                </div>
+                            </div>
+                        </a>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="bg-white rounded-xl p-12 text-center">
+                    <p class="text-[#64748B] text-lg">No listings available right now. Check back soon.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
     
     <div id="features" class="bg-white py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
