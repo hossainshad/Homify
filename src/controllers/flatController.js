@@ -1,11 +1,17 @@
 import { FlatModel } from '../models/Flats.js';
+import { uploadToCloudinary } from '../middlewares/uploadMiddleware.js';
 
 export const addFlat = async (req, res) => {
     try {
-        // Cloudinary returns the hosted URL in file.path
-        const imagePaths = req.files.map(file => file.path);
-        
-        // Create flat with images
+        // Upload each in-memory file to Cloudinary, collect hosted URLs
+        const imagePaths = [];
+        if (req.files && req.files.length > 0) {
+            for (const file of req.files) {
+                const url = await uploadToCloudinary(file.buffer);
+                imagePaths.push(url);
+            }
+        }
+
         const flatData = {
             ...req.body,
             property_id: parseInt(req.params.p_id),
