@@ -47,6 +47,15 @@ app.set('views', path.join(__dirname, 'views'));
 
 
 // Routes
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error('DB connection error:', err);
+        res.status(500).send('Database connection failed');
+    }
+});
 
 app.use(async (req, res, next) => {
     if (req.session.user) {

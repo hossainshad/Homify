@@ -1,16 +1,22 @@
 import mongoose from 'mongoose';
 
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
 const connectDB = async () => {
-  try {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
     const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/homify';
-    if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(uri);
-      console.log('MongoDB Connected...');
-    }
-  } catch (err) {
-    console.error('Error connecting to MongoDB:', err.message);
-    process.exit(1);
+    cached.promise = mongoose.connect(uri, {
+      bufferCommands: false,
+    }).then((m) => m);
   }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 };
 
 export default connectDB;
