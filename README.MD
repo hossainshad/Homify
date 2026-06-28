@@ -22,6 +22,10 @@ A Node.js/Express web app (server-rendered with a templating engine, MongoDB via
 | `Payments` | Individual rent payments toward a `Rentals` record | `rental_id`, `amount`, `payment_month`, `payment_year` |
 | `Maintenance` | A tenant's maintenance/repair request | `tenant_username`, `owner_username`, `description`, `status` |
 
+
+![Wireframe diagram](wireframe.png)
+
+
 ## Core Flows
 
 **Registration & login** — `registerRoutes.js` / `loginRoutes.js`. Users register with a role flag (owner/tenant) and log in with username + password; session stores a trimmed copy of the user document.
