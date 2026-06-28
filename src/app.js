@@ -16,7 +16,7 @@ import ownerRoutes from './routes/ownerRoutes.js';
 import MongoStore from 'connect-mongo';
 import User from './models/User.js';
 const app = express();
-
+app.set('trust proxy', 1);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
